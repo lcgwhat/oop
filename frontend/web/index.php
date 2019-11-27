@@ -1,6 +1,6 @@
 <?php
 defined('YII_DEBUG') or define('YII_DEBUG', true);
-if (file_exists('dev.txt')) {
+if (file_exists('prod.txt')) {
     define('YII_ENV', 'dev');
 } else {
     define('YII_ENV', 'prod');

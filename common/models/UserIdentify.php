@@ -9,7 +9,7 @@ namespace common\models;
 
 use yii\web\IdentityInterface;
 
-abstract class userIdentify implements IdentityInterface
+abstract class UserIdentify implements IdentityInterface
 {
     /**
      * @var integer 用户类型-系统用户

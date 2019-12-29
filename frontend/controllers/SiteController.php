@@ -1,6 +1,7 @@
 <?php
-namespace frontend\controllers;
+namespace app\controllers;
 
+use app\models\site\SiteService;
 use common\models\system\UserForm;
 use common\models\system\SignupForm;
 use frontend\models\ResendVerificationEmailForm;
@@ -48,8 +49,14 @@ class SiteController extends Controller
         }
 
         $model = new UserForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+        if (!$model->loadPost()) {
+
+            if (!$model->validate()) {
+               return $this->jsonError($model->getError());
+            }
+            $service = new SiteService();
+            $service->login();
+
         } else {
             $model->password = '';
 
@@ -57,6 +64,7 @@ class SiteController extends Controller
                 'model' => $model,
             ]);
         }
+
     }
 
     /**

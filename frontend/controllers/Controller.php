@@ -4,10 +4,11 @@
  * atuthor: liuchg
  */
 
-namespace frontend\controllers;
+namespace app\controllers;
 
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\helpers\Json;
 
 class Controller extends \yii\web\Controller
 {
@@ -73,5 +74,28 @@ class Controller extends \yii\web\Controller
     }
     protected function verbFilter() {
         return [];
+    }
+    public function jsonError($message, $data = [], $code = null) {
+    $code = ($code)? $code:2000;
+    $result = [
+        'code'	 =>$code,
+        'message'=>$message,
+        'data'	 =>$data,
+    ];
+
+    return Json::encode($result);
+}
+
+    public function jsonSuccess($message='', $data = null) {
+        $data = ($data===null && is_array($message))? $message:$data;
+        $message = (is_string($message))? $message:null;
+
+        $result = [
+            'code'=>1000,
+            'message'=>$message,
+            'data'=>$data,
+        ];
+
+        return Json::encode($result);
     }
 }

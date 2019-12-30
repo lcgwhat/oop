@@ -7,19 +7,21 @@ use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
 use yii\base\InvalidArgumentException;
+use yii\captcha\Captcha;
+use yii\helpers\Console;
+use yii\helpers\Json;
 use yii\web\BadRequestHttpException;
-
-use common\models\LoginForm;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
-
 use frontend\models\ContactForm;
+use yii\helpers\ArrayHelper;
 
 /**
  * Site controller
  */
 class SiteController extends Controller
 {
+
     protected function accessAllow() {
         // 登录页和错误页，无需登录也可以访问
         return ['login', 'error', 'signup'];
@@ -32,10 +34,71 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        $a = [
+            [
+                'name' => 'ali1' , 'time' => date('Y年m月d日', strtotime('-1day'))
+            ],
+            [
+                'name' => 'ali2', 'time' => date('Y年m月d日', strtotime('-2day'))
+            ],
+            [
+                'name' => 'ali3', 'time' => date('Y年m月d日',strtotime('-1day'))
+            ],
+            [
+                'name' => 'ali4', 'time' => date('Y年m月d日',strtotime('-3day'))
+            ]
+        ];
+        $a2= array_map(function(&$val){
 
+            $val['name'] .=  '+++--';
+            $s[$val['name']]= $val['time'];
+            return $s;
+        }, $a);
+        $re = ArrayHelper::index($a, null,'time');
+
+
+        $this->stdout("Hello?\n", Console::BOLD);
+        die;
         return $this->render('index');
     }
 
+    public function actionGetSmsCode(){
+        $msg = [
+            'code' => 200,
+            'message' => '',
+            'data' => []
+        ];
+
+        return $this->asJson($msg);
+    }
+
+    public function actionExistName(){
+        $name = \Yii::$app->request->post('name',100);
+        if ($name == 101) {
+            $message = [
+                'code' => 100,
+                'data' => [],
+                'message' => '已存在'
+            ];
+        } else {
+            $message = [
+                'code' => 200,
+                'data' => [],
+                'message' => '已存在'
+            ];
+        }
+
+        return $this->asJson($message);
+    }
+
+    public function actionGetCode(){
+        echo Captcha::widget([
+            'name' => 'captcha',
+        ]);
+    }
+//    public function actionCaptcha(){
+//        Captcha::className();
+//    }
     /**
      * Logs in a user.
      *
@@ -43,20 +106,35 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
+       if (\Yii::$app->request->isPost) {
+           $message = [
+               'code' => 200,
+               'data' => []
+           ];
+           if (\Yii::$app->session->has('user')){
 
-        $model = new UserForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        } else {
-            $model->password = '';
 
-            return $this->render('login', [
-                'model' => $model,
-            ]);
-        }
+               $user = \Yii::$app->session->get('user');
+               $user['isSession'] = true;
+               $message['data'] = $user;
+               return $this->asJson($message);
+           }
+           $user = [
+               'id' => 101,
+               'name' => '测试'
+           ];
+           $message['data'] = $message;
+           \Yii::$app->session->set('user', $user);
+           return $this->asJson($message);
+       }
+        $message = [
+            'code' => 100,
+            'data' => [
+                'id' => 101,
+                'name' => '测试'
+            ]
+        ];
+        return $this->asJson($message);
     }
 
     /**

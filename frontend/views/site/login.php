@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="row">
         <div class="col-lg-5">
-            <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
+            <?php $form = ActiveForm::begin(['id' => 'login-form','layout' => 'horizontal']); ?>
 
                 <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
 
@@ -31,10 +31,25 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
 
                 <div class="form-group">
-                    <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+                    <?= Html::button('登入', ['id' => 'login','class' => 'btn btn-primary', 'name' => 'login-button']) ?>
                 </div>
 
             <?php ActiveForm::end(); ?>
         </div>
     </div>
 </div>
+<script>
+
+(function ($) {
+
+    $('#login').click(function(){
+        var form = $(this).parents('form')[0];
+        var $form = $(form);
+        var url = form.action;
+
+        console.log($form.serializeArray());
+        //$form.yiiActiveForm('submitForm');
+        console.log($form)
+    })
+})(window.jQuery)
+</script>

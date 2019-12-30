@@ -4,7 +4,7 @@
  * atuthor: liuchg
  */
 
-namespace frontend\controllers;
+namespace app\controllers;
 
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;

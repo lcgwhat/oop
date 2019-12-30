@@ -1,20 +1,13 @@
 <?php
-namespace frontend\controllers;
+namespace app\controllers;
 
-use common\models\system\UserForm;
 use common\models\system\SignupForm;
-use frontend\models\ResendVerificationEmailForm;
-use frontend\models\VerifyEmailForm;
 use Yii;
 use yii\base\InvalidArgumentException;
 use yii\captcha\Captcha;
-use yii\helpers\Console;
-use yii\helpers\Json;
-use yii\web\BadRequestHttpException;
-use frontend\models\PasswordResetRequestForm;
-use frontend\models\ResetPasswordForm;
-use frontend\models\ContactForm;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Console;
+use yii\web\BadRequestHttpException;
 
 /**
  * Site controller

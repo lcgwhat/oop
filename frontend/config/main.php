@@ -10,7 +10,7 @@ return [
     'name' => '-_-!商城',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
-    'controllerNamespace' => 'frontend\controllers',
+    'controllerNamespace' => 'app\controllers',
     'components' => [
         'view' => [
             'title' => '商城',

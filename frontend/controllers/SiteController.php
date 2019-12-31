@@ -66,7 +66,7 @@ class SiteController extends Controller
     }
 
     public function actionExistName(){
-        $name = \Yii::$app->request->post('name',100);
+        $name = \Yii::$app->request->post('phone',100);
         if ($name == 101) {
             $message = [
                 'code' => 100,
@@ -84,6 +84,14 @@ class SiteController extends Controller
         return $this->asJson($message);
     }
 
+    public function actionRegister(){
+        $msg = [
+            'code' => 200,
+            'data' => [],
+            'msg' => 'xxx'
+        ];
+        return $this->asJson($msg);
+    }
     public function actionGetCode(){
         echo Captcha::widget([
             'name' => 'captcha',

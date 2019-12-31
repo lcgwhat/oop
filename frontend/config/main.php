@@ -16,18 +16,16 @@ return [
             'title' => '商城',
         ],
         'request' => [
-//            'csrfParam' => '_csrf-frontend',
-            'enableCsrfValidation' => false,
+            'csrfParam' => '_csrf-frontend',
         ],
         'user' => [
-            'identityClass' => 'common\models\UserIdentity',
+            'identityClass' => 'common\models\system\UserIdentity',
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
         ],
         'session' => [
             // this is the name of the session cookie used for login on the frontend
             'name' => 'frontend',
-            'useCookies'=>true,
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

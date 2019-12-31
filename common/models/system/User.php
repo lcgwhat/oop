@@ -55,6 +55,8 @@ class User extends ActiveRecord
         return 'user';
     }
 
+
+
     public function rules()
     {
         return [
@@ -109,5 +111,19 @@ class User extends ActiveRecord
     public function setPassword($password)
     {
         $this->password_hash = Yii::$app->security->generatePasswordHash($password);
+    }
+
+    /**
+     * @param $id
+     * @return array|null|\yii\db\ActiveRecord
+     */
+    public static function findById($id){
+        return static::find()->where(['id' => $id])
+            ->andWhere(['!=', 'status', self::STATUS_200])->one();
+    }
+
+    public static function existsByUserName($username)
+    {
+        return static::find()->where(['username'=>$username])->exists();
     }
 }

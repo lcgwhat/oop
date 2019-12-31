@@ -8,6 +8,7 @@ namespace app\controllers;
 
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\helpers\Json;
 
 class Controller extends \yii\web\Controller
 {
@@ -62,15 +63,7 @@ class Controller extends \yii\web\Controller
             ],
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
-                'fixedVerifyCode' => 'xsdas',
-                'backColor'=>0x000000,//背景颜色
-                'maxLength' => 6, //最大显示个数
-                'minLength' => 5,//最少显示个数
-                'padding' => 5,//间距
-                'height'=>40,//高度
-                'width' => 130,  //宽度
-                'foreColor'=>0xffffff,     //字体颜色
-                'offset'=>4,        //设置字符偏移量 有效果
+                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
         ];
     }
@@ -81,5 +74,28 @@ class Controller extends \yii\web\Controller
     }
     protected function verbFilter() {
         return [];
+    }
+    public function jsonError($message, $data = [], $code = null) {
+    $code = ($code)? $code:2000;
+    $result = [
+        'code'	 =>$code,
+        'message'=>$message,
+        'data'	 =>$data,
+    ];
+
+    return Json::encode($result);
+}
+
+    public function jsonSuccess($message='', $data = null) {
+        $data = ($data===null && is_array($message))? $message:$data;
+        $message = (is_string($message))? $message:null;
+
+        $result = [
+            'code'=>1000,
+            'message'=>$message,
+            'data'=>$data,
+        ];
+
+        return Json::encode($result);
     }
 }

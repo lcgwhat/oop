@@ -16,7 +16,10 @@ return [
             'title' => '商城',
         ],
         'request' => [
-            'csrfParam' => '_csrf-frontend',
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ],
+            'enableCsrfValidation' => false,
         ],
         'user' => [
             'identityClass' => 'common\models\system\UserIdentity',
@@ -25,7 +28,10 @@ return [
         ],
         'session' => [
             // this is the name of the session cookie used for login on the frontend
-            'name' => 'frontend',
+            'class'=>'yii\web\CacheSession',
+            'useCookies'=>true,
+            'timeout' => 7200,
+            'name' => 'ASESSID',
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

@@ -5,8 +5,6 @@ use common\models\system\SignupForm;
 use Yii;
 use yii\base\InvalidArgumentException;
 use yii\captcha\Captcha;
-use yii\helpers\ArrayHelper;
-use yii\helpers\Console;
 use yii\web\BadRequestHttpException;
 
 /**
@@ -17,7 +15,7 @@ class SiteController extends Controller
 
     protected function accessAllow() {
         // 登录页和错误页，无需登录也可以访问
-        return ['login', 'error', 'signup'];
+        return ['login', 'error', 'signup', 'exist-name'];
     }
 
     /**
@@ -41,17 +39,7 @@ class SiteController extends Controller
                 'name' => 'ali4', 'time' => date('Y年m月d日',strtotime('-3day'))
             ]
         ];
-        $a2= array_map(function(&$val){
 
-            $val['name'] .=  '+++--';
-            $s[$val['name']]= $val['time'];
-            return $s;
-        }, $a);
-        $re = ArrayHelper::index($a, null,'time');
-
-
-        $this->stdout("Hello?\n", Console::BOLD);
-        die;
         return $this->render('index');
     }
 
@@ -66,6 +54,7 @@ class SiteController extends Controller
     }
 
     public function actionExistName(){
+
         $name = \Yii::$app->request->post('phone',100);
         if ($name == 101) {
             $message = [
@@ -107,6 +96,7 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
+
        if (\Yii::$app->request->isPost) {
            $message = [
                'code' => 200,

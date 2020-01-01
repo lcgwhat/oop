@@ -6,8 +6,8 @@
 
 namespace app\controllers;
 
-use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\helpers\Json;
 
 class Controller extends \yii\web\Controller
@@ -41,12 +41,12 @@ class Controller extends \yii\web\Controller
         ];
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'only' => ['logout', 'signup'],
                 'rules' => $rules
             ],
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => $this->verbFilter(),
             ],
         ];
@@ -76,7 +76,7 @@ class Controller extends \yii\web\Controller
         return [];
     }
     public function jsonError($message, $data = [], $code = null) {
-    $code = ($code)? $code:2000;
+    $code = ($code)? $code:200;
     $result = [
         'code'	 =>$code,
         'message'=>$message,
@@ -91,7 +91,7 @@ class Controller extends \yii\web\Controller
         $message = (is_string($message))? $message:null;
 
         $result = [
-            'code'=>1000,
+            'code'=>100,
             'message'=>$message,
             'data'=>$data,
         ];

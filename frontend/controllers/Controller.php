@@ -76,7 +76,7 @@ class Controller extends \yii\web\Controller
         return [];
     }
     public function jsonError($message, $data = [], $code = null) {
-    $code = ($code)? $code:200;
+    $code = ($code)? $code:100;
     $result = [
         'code'	 =>$code,
         'message'=>$message,
@@ -91,7 +91,7 @@ class Controller extends \yii\web\Controller
         $message = (is_string($message))? $message:null;
 
         $result = [
-            'code'=>100,
+            'code'=>200,
             'message'=>$message,
             'data'=>$data,
         ];

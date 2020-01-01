@@ -1,6 +1,8 @@
 <?php
 namespace app\controllers;
 
+use app\models\site\SiteForm;
+use app\models\site\SiteService;
 use common\models\system\SignupForm;
 use Yii;
 use yii\base\InvalidArgumentException;
@@ -81,11 +83,7 @@ class SiteController extends Controller
         ];
         return $this->asJson($msg);
     }
-    public function actionGetCode(){
-        echo Captcha::widget([
-            'name' => 'captcha',
-        ]);
-    }
+
 //    public function actionCaptcha(){
 //        Captcha::className();
 //    }
@@ -96,36 +94,18 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
+        $form = new SiteForm();
+        if (!$form->apiLoadPost()) {
+            return $this->jsonError($form->getError());
+        } else {
+            $service = new SiteService();
+            $result = $service->login($form);
+            if (!$result) {
+                return $this->jsonError($service->getError());
+            }
+            return $this->jsonSuccess('登入成功', $result);
+        }
 
-       if (\Yii::$app->request->isPost) {
-           $message = [
-               'code' => 200,
-               'data' => []
-           ];
-           if (\Yii::$app->session->has('user')){
-
-
-               $user = \Yii::$app->session->get('user');
-               $user['isSession'] = true;
-               $message['data'] = $user;
-               return $this->asJson($message);
-           }
-           $user = [
-               'id' => 101,
-               'name' => '测试'
-           ];
-           $message['data'] = $message;
-           \Yii::$app->session->set('user', $user);
-           return $this->asJson($message);
-       }
-        $message = [
-            'code' => 100,
-            'data' => [
-                'id' => 101,
-                'name' => '测试'
-            ]
-        ];
-        return $this->asJson($message);
     }
 
     /**

@@ -7,8 +7,15 @@
 namespace common\models;
 
 
+use yii\helpers\Json;
+
 class FormModel extends \yii\base\Model
 {
+    public function apiLoadPost($formName = null) {
+        $data = file_get_contents('php://input');
+        $data = Json::decode($data);
+        return $this->load($data, '');
+    }
     public function loadPost($formName=null){
         $data = \Yii::$app->request->post();
         if ($data) {

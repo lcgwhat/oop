@@ -96,6 +96,10 @@ class User extends ActiveRecord
         ];
     }
 
+    public static function findByMobile($mobile){
+        return self::findOne(['mobi' => $mobile, 'status' => static::STATUS_200]);
+    }
+
     public static function findByUsername($username){
         return self::findOne(['username'=>$username,'status'=>static::STATUS_200]);
     }

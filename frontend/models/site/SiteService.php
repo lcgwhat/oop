@@ -5,9 +5,11 @@
  */
 namespace  app\models\site;
 
+use common\models\Error;
 use common\models\LogicModel;
 use common\models\system\User;
 use common\models\system\UserIdentity;
+use common\models\system\UserModel;
 
 class SiteService extends LogicModel
 {
@@ -27,6 +29,23 @@ class SiteService extends LogicModel
           'name' => $user->name
         ];
         return $user;
+    }
+
+    /**
+     * 注册
+     * @param RegisterForm $form
+     * @return bool
+     * @throws \yii\base\Exception
+     */
+    public function create(RegisterForm $form){
+        $attributions['mobile'] = $form->phone;
+        $attributions['password_hash'] = $form->password;
+        $res = UserModel::create($attributions, '');
+        if (Error::isError($res)) {
+            return $this->setError($res->getError());
+        }
+
+        return true;
     }
     public function getUser(){
         $user = \Yii::$app->user->getId();

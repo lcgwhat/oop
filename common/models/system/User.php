@@ -117,6 +117,7 @@ class User extends ActiveRecord
         $this->password_hash = Yii::$app->security->generatePasswordHash($password);
     }
 
+
     /**
      * @param $id
      * @return array|null|\yii\db\ActiveRecord
@@ -129,5 +130,9 @@ class User extends ActiveRecord
     public static function existsByUserName($username)
     {
         return static::find()->where(['username'=>$username])->exists();
+    }
+
+    public static function existByMobile($mobile){
+        return static::find()->where(['mobi' => $mobile])->exists();
     }
 }

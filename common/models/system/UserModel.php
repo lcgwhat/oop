@@ -20,6 +20,33 @@ class UserModel extends LogicModel
     }
 
     /**
+     * @param $attrib
+     * mobile
+     * password_hash
+     * @param $note
+     * @return bool|Error
+     * @throws \yii\base\Exception
+     */
+    public static function create($attrib, $note){
+        $exist = User::existByMobile($attrib['mobile']);
+        if ($exist) {
+            return new Error('改手机号码已被占用');
+        }
+        $model = new User();
+        $model->mobi = $attrib['mobile'];
+        $model->name = uniqid('luxi—');
+        $model->username = uniqid('user');
+        $model->password_hash = \Yii::$app->security->generatePasswordHash($attrib['password_hash']);
+        $model->email = '22';
+        $model->note = $note;
+        $model->status = User::STATUS_200;
+        if (!$model->save()) {
+            return new Error($model->getErrors());
+        }
+
+        return true;
+    }
+    /**
      * @return User 返回用户对象
      */
     public function getData() {

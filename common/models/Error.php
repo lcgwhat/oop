@@ -18,7 +18,7 @@ class Error extends LogicModel
         }
     }
 
-    public function isError($obj) {
+    public static function isError($obj) {
         return ($obj instanceof self);
     }
 }

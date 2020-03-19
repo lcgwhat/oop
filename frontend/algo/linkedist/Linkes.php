@@ -76,4 +76,54 @@ class Linkes
 
         return $preNode;
     }
+
+    /**
+     * 判断链表是否有环
+     *
+     * 快慢指针判断是否有环
+     * @link http://t.cn/ROxpgQ1
+     *
+     * @return bool
+     */
+    public function checkCircle() {
+        if (is_null($this->list) || is_null($this->list->head) || is_null($this->list->head->next)) {
+            return false;
+        }
+        $fast = $this->list->head->next;
+        $slow = $this->list->head->next;
+        while (!is_null($fast) && !is_null($fast->next)) {
+            $fast = $fast->next->next;
+            $slow = $slow->next;
+            // 如果慢指针跟快指针相遇了说明有环 解释在上面的链接中
+            if ($fast == $slow) {
+                return  true;
+            }
+        }
+        return  false;
+    }
+
+    /**
+     * 寻找中间节点
+     * 快慢指针遍历
+     * @return bool
+     */
+    public function findMiddleNode() {
+        if (is_null($this->list) || is_null($this->list->head) || is_null($this->list->head->next)) {
+            return false;
+        }
+        $fast = $this->list->head->next;
+        $slow = $this->list->head->next;
+        while (!is_null($fast) && !is_null($fast->next)) {
+            $fast = $fast->next->next;
+            $slow = $slow->next;
+        }
+        return $slow;
+    }
+
+    public static function mergerSortList(LinkList $listA, LinkList $listB){
+        if (is_null($listA) || is_null($listB)) {
+            return false;
+        }
+
+    }
 }

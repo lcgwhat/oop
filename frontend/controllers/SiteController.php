@@ -1,6 +1,11 @@
 <?php
 namespace app\controllers;
 
+use app\algo\arr\Arr;
+use app\algo\linkedist\Linkes;
+use app\algo\linkedist\LinkList;
+use app\algo\queue\QueueOnLinkedList;
+use app\algo\stack\StackOnLinkedList;
 use app\models\site\RegisterForm;
 use app\models\site\SiteForm;
 use app\models\site\SiteService;
@@ -12,6 +17,10 @@ use Yii;
 class SiteController extends Controller
 {
 
+    const User = [
+        'id' => 1,
+        'user' => 'lili'
+    ];
     protected function accessAllow() {
         // 登录页和错误页，无需登录也可以访问
         return ['login', 'error', 'signup', 'exist-name'];
@@ -24,6 +33,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+
         $a = [
             [
                 'name' => 'ali1' , 'time' => date('Y年m月d日', strtotime('-1day'))
@@ -41,7 +51,11 @@ class SiteController extends Controller
 
         return $this->render('index');
     }
+    public function actionCss()
+    {
 
+        return $this->render('css');
+    }
     public function actionGetSmsCode(){
         $msg = [
             'code' => 200,
@@ -72,10 +86,37 @@ class SiteController extends Controller
         return $this->asJson($message);
     }
 
-
+    public function actionIsLogin(){
+        return $this->jsonSuccess('已经登入',self::User);
+    }
 //    public function actionCaptcha(){
 //        Captcha::className();
 //    }
+
+    public function stack() {
+        $stack = new StackOnLinkedList();
+        $stack->push(1);
+        $stack->push(2);
+        $stack->push(3);
+        $stack->push(4);
+        $stack->pop();
+        $stack->printSelf();
+    }
+
+    public function queue() {
+        $queue = new QueueOnLinkedList();
+        $queue->enQueue(1);
+        $queue->enQueue(1);
+        $queue->enQueue(1);
+        $queue->enQueue(1);
+        $queue->printSelf();
+    }
+     function myFuc($v1,$v2){
+        if ($v1==$v2) {
+            return 'same';
+        }
+        return 'diff';
+    }
     /**
      * Logs in a user.
      *
@@ -83,6 +124,72 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
+        $a1=array("Horse","Dog","Cat");
+        $a2=array("Cow","Dog","Rat");
+        $re = array_map(function($v1,$v2){
+            if ($v1==$v2) {
+                return 'same';
+            }
+            return 'diff';
+        },$a1,$a2);
+
+        var_dump($re);die;
+        $this->queue();die;
+        $this->stack();die;
+//        $myArr1 = new Arr(10);
+//        for($i=0;$i<4;$i++) {
+//            $myArr1->insert($i, $i+1);
+//        }
+//
+//        $code = $myArr1->insert(3, 999);
+//       echo "insert at 3: code:{$code}\r".'<br>';
+//
+//
+//        list($code, $value) = $myArr1->delete(6);
+//        echo "delete at 6: code:{$code}, value:{$value}\n".'<br>';
+//        //$myArr1->printData();
+//
+//        $code = $myArr1->insert(6, 999);
+//        echo "insert at 6: code:{$code}\n".'<br>';
+//        //$myArr1->printData();
+//        var_dump($myArr1->data);echo '<br>';
+//        list($code, $value) = $myArr1->delete(4);
+//        echo "delete at 0: code:{$code}, value:{$value}".'<br>';
+//        //$myArr1->printData();
+//        var_dump($myArr1->data);echo '<br>';
+//        list($code, $value) = $myArr1->find(0);
+//        echo "find at 0: code:{$code}, value:{$value}".'<br>';
+//
+//die;
+
+        $list = new LinkList();
+        $list->insert('a');
+        $list->insert('b');
+        $list->insert('c');
+        $list->insert('d');
+        $list->insert('e');
+        //$list->buildCircleList();
+        $list->printList();
+        $s = new Linkes($list);
+        $s->reverse();
+
+        var_dump($s->findMiddleNode()); ;die;
+        $list->printList();
+        die;
+        return $this->render('login');die;
+        $this->{'layout'} = 'inxe';
+        // 记录开始时间
+        $starttime = $this->get_microtime();
+        // 执行10万次获取随机小数
+        for($i=0; $i<100000; $i++){
+            $this->randFloat();
+        }
+        // 记录结束时间
+        $endtime = $this->get_microtime();
+
+        // 输出运行时间
+        printf("run time %f ms \r\n", ($endtime-$starttime)*1000);
+        echo round(12.22222, 4);die;
         $form = new SiteForm();
         if (!$form->apiLoadPost()) {
             return $this->jsonError($form->getError());
@@ -96,6 +203,16 @@ class SiteController extends Controller
         }
 
     }
+    function randFloat($min=0, $max=1){
+        return $min + mt_rand()/mt_getrandmax() * ($max-$min);
+    }
+
+    // 获取microtime
+    function get_microtime(){
+        list($usec, $sec) = explode(' ', microtime());
+        return (float)$usec + (float)$sec;
+    }
+
 
     public function actionRegister(){
         $form = new RegisterForm();
@@ -129,5 +246,68 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
+    }
+
+    function trap(array $height)
+    {
+        $res = 0;
+        $size = count($height);
+        $left[0] = $height[0];
+        for ($i = 1; $i < $size; $i++) {
+            $left[$i] = max($left[$i - 1], $height[$i]);
+        }
+        $right[$size - 1] = $height[$size - 1];
+        for ($i = $size - 2; $i >= 0; $i--) {
+            $right[$i] = max($right[$i + 1], $height[$i]);
+        }
+
+        for ($i = 1; $i < $size - 1; $i++) {
+            $res += min($left[$i], $right[$i]) - $height[$i];
+        }
+        echo '<div>';
+
+        print_r($left);
+        echo '</div>';
+        print_r($right);
+        return $res;
+    }
+
+    function blade($nums, $target) {
+        $left = 0;
+        $right = count($nums)-1;
+        while($left<=$right){//注意条件界限
+            $mid = intval(($left+$right)/2);//注意取整
+            if($nums[$mid] == $target){
+                //相关逻辑处理;
+            }elseif($nums[$mid] > $target){//注意right向左偏移
+                $right = $mid -1;
+            }else{//注意left向右偏移
+                $left = $mid+1;
+            }
+        }
+
+        //相关值返回
+        return 0;
+    }
+
+    public function trap2(array $height)
+    {
+        $res = 0;
+        $size = count($height);
+        for ($i=1; $i < $size-1; $i++) {
+            $left = 0;
+            for ($j=$i; $j >= 0; $j--){
+                $left = max($left,$height[$j]);
+            }
+
+            $right = 0;
+            for ($j = $i; $j < $size; $j++) {
+                $right = max($right, $height[$j]);
+            }
+
+            $res += min($left,$right) - $height[$i];
+        }
+
+        return $res;
     }
 }

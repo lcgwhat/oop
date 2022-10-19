@@ -1,14 +1,18 @@
 <?php
 namespace app\controllers;
 
-use app\algo\arr\Arr;
-use app\algo\linkedist\Linkes;
-use app\algo\linkedist\LinkList;
+
 use app\algo\queue\QueueOnLinkedList;
 use app\algo\stack\StackOnLinkedList;
 use app\models\site\RegisterForm;
 use app\models\site\SiteForm;
 use app\models\site\SiteService;
+use common\components\JWT;
+use common\models\User;
+use Lcobucci\JWT\Parser;
+use Lcobucci\JWT\Signer\Hmac\Sha256;
+use Lcobucci\JWT\Signer\Key;
+use Lcobucci\JWT\ValidationData;
 use Yii;
 
 /**
@@ -17,6 +21,12 @@ use Yii;
 class SiteController extends Controller
 {
 
+    public function withoutAuthorization()
+    {
+        return [
+            'login','index'
+        ];
+    }
     const User = [
         'id' => 1,
         'user' => 'lili'
@@ -26,6 +36,7 @@ class SiteController extends Controller
         return ['login', 'error', 'signup', 'exist-name'];
     }
 
+
     /**
      * Displays homepage.
      *
@@ -33,24 +44,40 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        /**
+         * @var $jwt JWT
+         */
+        $jwt = Yii::$app->get('jwt');
+        $user = 1;
+        $oek = $jwt->encode($user);
 
-        $a = [
-            [
-                'name' => 'ali1' , 'time' => date('Y年m月d日', strtotime('-1day'))
-            ],
-            [
-                'name' => 'ali2', 'time' => date('Y年m月d日', strtotime('-2day'))
-            ],
-            [
-                'name' => 'ali3', 'time' => date('Y年m月d日',strtotime('-1day'))
-            ],
-            [
-                'name' => 'ali4', 'time' => date('Y年m月d日',strtotime('-3day'))
-            ]
-        ];
 
-        return $this->render('index');
+        return $this->jsonSuccess('', [(string)$oek]);
     }
+
+    public function actionParse(){
+        $token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImp0aSI6Ii1MRVhVdmRlcHoifQ.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjEiLCJhdWQiOiIiLCJqdGkiOiItTEVYVXZkZXB6IiwiaWF0IjoxNjY2MDYzOTM5LCJuYmYiOjE2NjYwNjM5MzksImV4cCI6MTY2NjA2NzUzOSwidXNlciI6eyJ1c2VyX25hbWUiOiJcdTZkNGJcdThiZDUiLCJ1c2VyX25vIjoiMDAxIn0sImNlc2hpIjoiXHU2ZDRiXHU4YmQ1XHU1YjU3XHU2YmI1In0.cMqfQMIQxkPRqYEu85gkVgk5uBMUcDAaWGPYGrvUFxY";
+        $token = (new Parser())->parse($token);
+        //数据校验
+        $data = new ValidationData(); // 使用当前时间来校验数据
+        if (!$token->validate($data)) {
+            //数据校验失败
+            return '数据校验失败';
+        }
+        //token校验
+        $signer = new Sha256();//生成JWT时使用的加密方式
+        if (!$token->verify($signer, new Key('jwt_secret'))) {
+            //token校验失败
+           return $this->jsonSuccess('token校验失败');
+        }
+        return $this->jsonSuccess('成功');
+    }
+
+    public function actionProfile(){
+        $user = Yii::$app->user->identity;
+        return  $this->jsonSuccess('',$user->getAttributes());
+    }
+
     public function actionCss()
     {
 
@@ -124,75 +151,10 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
-        $a1=array("Horse","Dog","Cat");
-        $a2=array("Cow","Dog","Rat");
-        $re = array_map(function($v1,$v2){
-            if ($v1==$v2) {
-                return 'same';
-            }
-            return 'diff';
-        },$a1,$a2);
-
-        var_dump($re);die;
-        $this->queue();die;
-        $this->stack();die;
-//        $myArr1 = new Arr(10);
-//        for($i=0;$i<4;$i++) {
-//            $myArr1->insert($i, $i+1);
-//        }
-//
-//        $code = $myArr1->insert(3, 999);
-//       echo "insert at 3: code:{$code}\r".'<br>';
-//
-//
-//        list($code, $value) = $myArr1->delete(6);
-//        echo "delete at 6: code:{$code}, value:{$value}\n".'<br>';
-//        //$myArr1->printData();
-//
-//        $code = $myArr1->insert(6, 999);
-//        echo "insert at 6: code:{$code}\n".'<br>';
-//        //$myArr1->printData();
-//        var_dump($myArr1->data);echo '<br>';
-//        list($code, $value) = $myArr1->delete(4);
-//        echo "delete at 0: code:{$code}, value:{$value}".'<br>';
-//        //$myArr1->printData();
-//        var_dump($myArr1->data);echo '<br>';
-//        list($code, $value) = $myArr1->find(0);
-//        echo "find at 0: code:{$code}, value:{$value}".'<br>';
-//
-//die;
-
-        $list = new LinkList();
-        $list->insert('a');
-        $list->insert('b');
-        $list->insert('c');
-        $list->insert('d');
-        $list->insert('e');
-        //$list->buildCircleList();
-        $list->printList();
-        $s = new Linkes($list);
-        $s->reverse();
-
-        var_dump($s->findMiddleNode()); ;die;
-        $list->printList();
-        die;
-        return $this->render('login');die;
-        $this->{'layout'} = 'inxe';
-        // 记录开始时间
-        $starttime = $this->get_microtime();
-        // 执行10万次获取随机小数
-        for($i=0; $i<100000; $i++){
-            $this->randFloat();
-        }
-        // 记录结束时间
-        $endtime = $this->get_microtime();
-
-        // 输出运行时间
-        printf("run time %f ms \r\n", ($endtime-$starttime)*1000);
-        echo round(12.22222, 4);die;
         $form = new SiteForm();
-        if (!$form->apiLoadPost()) {
-            return $this->jsonError($form->getError());
+
+        if (Yii::$app->request->isGet) {
+            return $this->render('login',['model'=>$form]);
         } else {
             $service = new SiteService();
             $result = $service->login($form);

@@ -9,5 +9,9 @@ return [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+        'jwt' => [
+            'class' => 'common\components\JWT',
+            'jwt_secret' => '1asdfashk@dfjals*d'
+        ]
     ],
 ];

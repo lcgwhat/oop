@@ -10,7 +10,8 @@ class SiteForm extends FormModel
 {
     public $phone;
     public $password;
-
+    public $username;
+    public $rememberMe;
     public function rules()
     {
         return [

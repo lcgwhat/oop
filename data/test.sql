@@ -1,4 +1,4 @@
-CREATE TABLE `user` (
+CREATE TABLE `user2` (
 `id`  int(11) NOT NULL AUTO_INCREMENT ,
 `username`  varchar(64) NULL COMMENT '用户名' ,
 `passwor_hash`  varchar(128) NULL ,

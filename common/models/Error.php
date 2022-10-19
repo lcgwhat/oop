@@ -16,6 +16,7 @@ class Error extends LogicModel
         } else {
             $this->addError($attribute, $error);
         }
+        parent::__construct();
     }
 
     public static function isError($obj) {

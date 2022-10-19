@@ -23,8 +23,8 @@ return [
         ],
         'user' => [
             'identityClass' => 'common\models\system\UserIdentity',
-            'enableAutoLogin' => true,
-            'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
+
+
         ],
         'session' => [
             // this is the name of the session cookie used for login on the frontend
@@ -43,7 +43,7 @@ return [
             ],
         ],
         'errorHandler' => [
-            'errorAction' => 'site/error',
+            'class' => 'common\components\JsonErrorHandle',
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,

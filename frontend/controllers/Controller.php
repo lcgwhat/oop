@@ -6,12 +6,17 @@
 
 namespace app\controllers;
 
+use common\filters\Authorization;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\helpers\Json;
+use yii\web\Response;
 
 class Controller extends \yii\web\Controller
 {
+    public function withoutAuthorization(){
+        return [];
+    }
     /**
      * {@inheritdoc}
      */
@@ -40,6 +45,10 @@ class Controller extends \yii\web\Controller
             'roles' => ['@'],
         ];
         return [
+            'authorization' => [
+                'class' => Authorization::class,
+                'exclude' => array_merge($this->withoutAuthorization(), $this->accessAllow())
+            ],
             'access' => [
                 'class' => AccessControl::class,
                 'only' => ['logout', 'signup'],
@@ -87,6 +96,7 @@ class Controller extends \yii\web\Controller
 }
 
     public function jsonSuccess($message='', $data = null) {
+        \Yii::$app->response->format = Response::FORMAT_JSON;
         $data = ($data===null && is_array($message))? $message:$data;
         $message = (is_string($message))? $message:null;
 
@@ -96,6 +106,6 @@ class Controller extends \yii\web\Controller
             'data'=>$data,
         ];
 
-        return Json::encode($result);
+        return $result;
     }
 }

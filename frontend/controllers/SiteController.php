@@ -145,11 +145,12 @@ class SiteController extends Controller
         return 'diff';
     }
     /**
+     *
      * Logs in a user.
      *
      * @return mixed
      */
-    public function actionLogin()
+    public function actionLogin2()
     {
         $form = new SiteForm();
 

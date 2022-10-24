@@ -8,6 +8,7 @@ namespace app\controllers;
 
 use common\filters\Authorization;
 use yii\filters\AccessControl;
+use yii\filters\Cors;
 use yii\filters\VerbFilter;
 use yii\helpers\Json;
 use yii\web\Response;
@@ -48,6 +49,21 @@ class Controller extends \yii\web\Controller
             'authorization' => [
                 'class' => Authorization::class,
                 'exclude' => array_merge($this->withoutAuthorization(), $this->accessAllow())
+            ],
+            // 跨域访问配置，仅用于测试环境
+            'cors' => [
+                'class' => Cors::className(),
+                'cors' => [
+                    'Origin' => [
+                        'http://localhost:8081',
+                        'http://127.0.0.1:8081',
+                    ],
+                    'Access-Control-Request-Method' => ['GET', 'POST', 'OPTIONS'],
+                    'Access-Control-Request-Headers' => ['Content-Type', 'X-Requested-With'],
+                    'Access-Control-Allow-Credentials' => true,
+                    'Access-Control-Max-Age' => 3600,
+                    'Access-Control-Expose-Headers' => ['X-Pagination-Current-Page'],
+                ],
             ],
             'access' => [
                 'class' => AccessControl::class,

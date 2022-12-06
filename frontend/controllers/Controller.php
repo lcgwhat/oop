@@ -15,6 +15,7 @@ use yii\web\Response;
 
 class Controller extends \yii\web\Controller
 {
+
     public function withoutAuthorization(){
         return [];
     }
@@ -51,7 +52,7 @@ class Controller extends \yii\web\Controller
                 'class' => Cors::className(),
                 'cors' => [
                     'Origin' => [
-                        '*'
+                        '127.0.0.1:8081','http://localhost:8081'
                     ],
                     'Access-Control-Request-Method' => ['GET', 'POST', 'OPTIONS'],
                     'Access-Control-Request-Headers' => ['Content-Type', 'X-Requested-With'],
@@ -64,15 +65,15 @@ class Controller extends \yii\web\Controller
                 'class' => Authorization::class,
                 'exclude' => array_merge($this->withoutAuthorization(), $this->accessAllow())
             ],
-            'access' => [
-                'class' => AccessControl::class,
-                'only' => ['logout', 'signup'],
-                'rules' => $rules
-            ],
-            'verbs' => [
-                'class' => VerbFilter::class,
-                'actions' => $this->verbFilter(),
-            ],
+//            'access' => [
+//                'class' => AccessControl::class,
+//                'only' => ['logout', 'signup'],
+//                'rules' => $rules
+//            ],
+//            'verbs' => [
+//                'class' => VerbFilter::class,
+//                'actions' => $this->verbFilter(),
+//            ],
         ];
     }
 

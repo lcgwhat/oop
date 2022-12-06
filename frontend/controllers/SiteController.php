@@ -24,7 +24,7 @@ class SiteController extends Controller
     public function withoutAuthorization()
     {
         return [
-            'login','index'
+            'login','index',''
         ];
     }
     const User = [

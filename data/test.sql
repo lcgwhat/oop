@@ -1,20 +1,23 @@
-CREATE TABLE `user2` (
-`id`  int(11) NOT NULL AUTO_INCREMENT ,
-`username`  varchar(64) NULL COMMENT '用户名' ,
-`passwor_hash`  varchar(128) NULL ,
-`name`  varchar(64) NULL COMMENT '用户名字' ,
-`mobi`  varchar(16) NULL COMMENT '手机号码' ,
-`email`  varchar(255) NULL COMMENT '邮箱' ,
-`status`  int(9) NULL ,
-`note`  varchar(255) NULL COMMENT '备注' ,
-`create_time`  datetime NULL ON UPDATE CURRENT_TIMESTAMP ,
-`update_time`  datetime NULL ON UPDATE CURRENT_TIMESTAMP ,
-PRIMARY KEY (`id`),
-INDEX `email` (`email`) USING BTREE ,
-INDEX `name` (`name`) USING BTREE
-)
-ENGINE=InnoDB
-DEFAULT CHARACTER SET=utf8mb4
-COMMENT='用户'
-;
+CREATE TABLE `account_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '账号id',
+  `email` varchar(30) NOT NULL DEFAULT '' COMMENT '邮箱',
+  `username` varchar(30) NOT NULL DEFAULT '' COMMENT '用户名',
+  `password` varchar(72) NOT NULL DEFAULT '' COMMENT '密码',
+  `create_at` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `create_ip_at` varchar(12) NOT NULL DEFAULT '' COMMENT '创建ip',
+  PRIMARY KEY (`id`),
+  KEY `idx_email` (`email`),
+  KEY `idx_username` (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='账户';
+
+
+
+CREATE TABLE `daily_trace` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '账号id',
+  `account_id` int(11) NOT NULL COMMENT '账号ID',
+  `trace_date` date DEFAULT NULL COMMENT '日期',
+  `note` varchar(255) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `account_date` (`account_id`,`trace_date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='每日追踪';
 

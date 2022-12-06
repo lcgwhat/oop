@@ -23,8 +23,6 @@ return [
         ],
         'user' => [
             'identityClass' => 'common\models\system\UserIdentity',
-
-
         ],
         'session' => [
             // this is the name of the session cookie used for login on the frontend

@@ -17,6 +17,7 @@ use yii\base\Component;
 Class JWT extends Component
 {
     private $_payloadKey = 'user';
+    private $expire = 3600 * 72;
     public $jwt_secret;
 
     /**
@@ -34,7 +35,7 @@ Class JWT extends Component
             ->identifiedBy(Yii::$app->security->generateRandomString(10), true) // 设置id
             ->issuedAt($time) // 设置生成token的时间
             ->canOnlyBeUsedAfter($time) // 设置token使用时间(实时使用)
-            ->expiresAt($time + 3600); //设置token过期时间
+            ->expiresAt($time + $this->expire); //设置token过期时间
         //定义自己所需字段
 
         $tokenBuilder->withClaim($this->_payloadKey, $customPayload);

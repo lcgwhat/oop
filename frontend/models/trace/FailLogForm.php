@@ -4,7 +4,7 @@
  *
  */
 
-namespace app\models;
+namespace app\models\trace;
 
 
 use common\models\FormModel;

@@ -4,13 +4,16 @@
  * atuthor: liuchg
  */
 
-namespace common\models\system;
+namespace common\models\account;
 
 
 use yii\base\NotSupportedException;
 
 class UserIdentity extends \common\models\UserIdentify
 {
+    /**
+     * @var $user AccountUser|null
+     */
     private $user;
 
     public function __construct($user)
@@ -24,7 +27,7 @@ class UserIdentity extends \common\models\UserIdentify
      */
     public static function findIdentity($id)
     {
-        $user = User::findById($id);
+        $user = AccountUser::findById($id);
         if (!$user) {
             return null;
         }

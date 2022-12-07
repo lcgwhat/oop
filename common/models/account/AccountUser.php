@@ -25,6 +25,11 @@ class AccountUser extends \yii\db\ActiveRecord
         return 'account_user';
     }
 
+    public static function findById(int $id)
+    {
+        return self::findOne(['id' => $id]);
+    }
+
     /**
      * {@inheritdoc}
      */

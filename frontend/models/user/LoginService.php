@@ -27,7 +27,7 @@ class LoginService extends LogicModel
          */
         $jwt = \Yii::$app->get('jwt');
         try {
-            $load = $jwt->encode(['id' => $account->id]);
+            $load = $jwt->encode($account->id);
         } catch (Exception $e) {
             return $this->setError($e->getMessage());
         }

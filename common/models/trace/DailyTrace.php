@@ -22,6 +22,11 @@ class DailyTrace extends \yii\db\ActiveRecord
         return 'daily_trace';
     }
 
+    public static function existByAccountAndDate(int $accountId, $date)
+    {
+        return self::find()->andWhere(['account_id' => $accountId])->andWhere(['trace_date' => $date])->exists();
+    }
+
     /**
      * {@inheritdoc}
      */

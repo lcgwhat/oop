@@ -22,7 +22,7 @@ return [
             'enableCsrfValidation' => false,
         ],
         'user' => [
-            'identityClass' => 'common\models\system\UserIdentity',
+            'identityClass' => 'common\models\account\UserIdentity',
         ],
         'session' => [
             // this is the name of the session cookie used for login on the frontend

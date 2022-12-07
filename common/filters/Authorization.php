@@ -9,8 +9,8 @@ namespace common\filters;
 
 
 use common\components\JWT;
+use common\models\account\UserIdentity;
 use common\models\Error;
-use common\models\User;
 use yii\base\ActionFilter;
 use yii\web\ForbiddenHttpException;
 
@@ -28,7 +28,7 @@ class Authorization extends ActionFilter
 
         // jwt 检查
         $headers = \Yii::$app->request->getHeaders();
-        $jwtToken = $headers->get('Authorization');
+        $jwtToken = $headers->get('authorization');
         if (empty($jwtToken)) {
             throw new ForbiddenHttpException("token 不能为空");
         }
@@ -44,7 +44,8 @@ class Authorization extends ActionFilter
         if (!is_numeric($userId)) {
             throw new ForbiddenHttpException("token 错误");
         }
-        $user = User::findIdentity($userId);
+
+        $user = UserIdentity::findIdentity($userId);
         if (is_null($user)) {
             throw new ForbiddenHttpException("用户不存在");
         }

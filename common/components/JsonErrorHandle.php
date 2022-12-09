@@ -30,9 +30,9 @@ class JsonErrorHandle extends \yii\web\ErrorHandler
         }
         $response->setStatusCode(200);
         $response->format = Response::FORMAT_JSON;
-        $code = 2000;
+        $code = 500;
         if ($exception instanceof ForbiddenHttpException) {
-            $code = 5000;
+            $code = 403;
             $message = $exception->getMessage();
 
         }else if ($exception instanceof HttpException || $exception instanceof UserException) {

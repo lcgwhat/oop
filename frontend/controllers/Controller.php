@@ -55,7 +55,7 @@ class Controller extends \yii\web\Controller
                         '127.0.0.1:8081','http://localhost:8081'
                     ],
                     'Access-Control-Request-Method' => ['GET', 'POST', 'OPTIONS'],
-                    'Access-Control-Request-Headers' => ['Content-Type', 'X-Requested-With'],
+                    'Access-Control-Request-Headers' => ['Content-Type', 'X-Requested-With', 'authorization'],
                     'Access-Control-Allow-Credentials' => true,
                     'Access-Control-Max-Age' => 3600,
                     'Access-Control-Expose-Headers' => ['X-Pagination-Current-Page'],
@@ -101,7 +101,7 @@ class Controller extends \yii\web\Controller
         return [];
     }
     public function jsonError($message, $data = [], $code = null) {
-    $code = ($code)? $code:100;
+    $code = ($code)? $code:2000;
     $result = [
         'code'	 =>$code,
         'message'=>$message,

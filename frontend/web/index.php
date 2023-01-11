@@ -1,9 +1,10 @@
 <?php
 defined('YII_DEBUG') or define('YII_DEBUG', true);
-if (!getenv('YII_ENV')) {
+$env = getenv('YII_ENV');
+if ($env == false) {
     define('YII_ENV', 'dev');
 } else {
-    define('YII_ENV', getenv('YII_ENV'));
+    define('YII_ENV', 'prod');
 }
 
 require __DIR__ . '/../../vendor/autoload.php';

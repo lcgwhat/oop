@@ -3,9 +3,10 @@
  * index.php
  * @author liuchg
  */
+$env = getenv('YII_ENV');
 
 defined('YII_DEBUG') or define('YII_DEBUG', true);
-if (file_exists('prod.txt')) {
+if ($env == false) {
     define('YII_ENV', 'dev');
 } else {
     define('YII_ENV', 'prod');

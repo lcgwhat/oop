@@ -9,7 +9,7 @@ if (file_exists('dev.txt')) {
     define('YII_ENV', 'dev');
 } else {
     define('YII_ENV', 'prod');
-} var_dump(YII_ENV);die;
+}
 require(__DIR__ . '/../vendor/autoload.php');
 require(__DIR__ . '/../vendor/yiisoft/yii2/Yii.php');
 require(__DIR__ . '/../common/config/bootstrap.php');

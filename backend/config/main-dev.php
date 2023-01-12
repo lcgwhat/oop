@@ -5,7 +5,7 @@
  */
 
 $config = [
-    'compoments' => [
+    'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
             'cookieValidationKey' => '在此处输入你的密钥',

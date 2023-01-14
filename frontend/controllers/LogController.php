@@ -11,6 +11,7 @@ use app\models\trace\FailLogForm;
 use app\models\trace\TraceService;
 use common\validates\MonthValidate;
 use Exception;
+use yii\validators\DateValidator;
 
 class LogController extends Controller
 {
@@ -28,15 +29,36 @@ class LogController extends Controller
         }
         return $this->jsonSuccess('操作成功');
     }
+
     public function actionMonthLog()
     {
         $month = \Yii::$app->request->get('month');
+        $month = strtotime($month);
+        if(!$month) {
+            return $this->jsonError('时间格式错误');
+        }
+        $month =date('Y-m', $month);
         $monthValidator = new MonthValidate();
-        if (!$monthValidator->validate($month)) {
-            return $this->jsonError('格式错误');
+        $err = '';
+        if (!$monthValidator->validate($month, $err)) {
+            return $this->jsonError($err);
         }
         $service = new TraceService();
         $res = $service->getMonthDaily($month);
+
+        return $this->jsonSuccess('',$res);
+    }
+
+    public function actionGetDayEvent(){
+        $day = \Yii::$app->request->get('day');
+        $validator = new DateValidator();
+        $validator->format = 'Y-m-d';
+        if (!$validator->validate($day)) {
+            return $this->jsonError('格式错误');
+
+        }
+        $service = new TraceService();
+        $res = $service->getDayEvent($day);
 
         return $this->jsonSuccess('',$res);
     }

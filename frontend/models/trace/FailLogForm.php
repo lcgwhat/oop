@@ -17,7 +17,14 @@ class FailLogForm extends FormModel
     public function rules()
     {
         return [
-            [['date', 'note'], 'required']
+            [['date', 'note'], 'required'],
+            [['date'], 'filter', 'filter'=>function($value){
+                $day = strtotime($value);
+                if(!$day) {
+                    return $this->addError('date', '格式错误');
+                }
+                return date('Y-m-d', $day);
+            }]
         ];
     }
 

@@ -22,7 +22,7 @@ class MonthValidate extends Validator
     {
         $unixTime = strtotime($month);
         if(!$unixTime) { //无法用strtotime转换，说明日期格式非法
-            return ['时间格式错误',[]];
+            return ['时间格式非法',[]];
         }
 
         //支持多种格式的时间判断  @var format array   例如：['Y-m-d','Y/m/d']

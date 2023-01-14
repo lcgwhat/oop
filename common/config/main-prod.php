@@ -7,9 +7,9 @@ return [
     'components' => [
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=127.0.0.1;dbname=test',
-            'username' => 'vps',
-            'password' => 'lfv2a21k6a309&2399',
+            'dsn' => 'mysql:host=127.0.0.1;dbname=golang_demo',
+            'username' => 'golang_demo',
+            'password' => '9527golang_demo@com',
             'charset' => 'utf8mb4',
             'enableSchemaCache' => true,
         ],

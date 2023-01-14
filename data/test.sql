@@ -15,6 +15,7 @@ CREATE TABLE `account_user` (
 CREATE TABLE `daily_trace` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '账号id',
   `account_id` int(11) NOT NULL COMMENT '账号ID',
+  `type` smallint not null comment '类型',
   `trace_date` date DEFAULT NULL COMMENT '日期',
   `note` varchar(255) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`),

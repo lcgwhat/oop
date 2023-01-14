@@ -9,11 +9,14 @@ use Yii;
  *
  * @property int $id 账号id
  * @property int $account_id 账号ID
+ * @property int $type
  * @property string|null $trace_date 日期
  * @property string|null $note 备注
  */
 class DailyTrace extends \yii\db\ActiveRecord
 {
+    const TYPE_FAIL = 10;
+    const TYPE_OTHER = 20;
     /**
      * {@inheritdoc}
      */
@@ -22,9 +25,13 @@ class DailyTrace extends \yii\db\ActiveRecord
         return 'daily_trace';
     }
 
-    public static function existByAccountAndDate(int $accountId, $date)
+    public static function existFailByAccountAndDate(int $accountId, $date)
     {
-        return self::find()->andWhere(['account_id' => $accountId])->andWhere(['trace_date' => $date])->exists();
+        return self::find()
+            ->andWhere(['account_id' => $accountId])
+            ->andWhere(['trace_date' => $date])
+            ->andWhere(['type' => static::TYPE_FAIL])
+            ->exists();
     }
 
     /**
@@ -34,7 +41,7 @@ class DailyTrace extends \yii\db\ActiveRecord
     {
         return [
             [['account_id'], 'required'],
-            [['account_id'], 'integer'],
+            [['account_id', 'type'], 'integer'],
             [['trace_date'], 'safe'],
             [['note'], 'string', 'max' => 255],
             [['account_id', 'trace_date'], 'unique', 'targetAttribute' => ['account_id', 'trace_date']],

@@ -61,7 +61,7 @@ class TraceService extends Service
     {
         $trace = new DailyTrace();
         $trace->trace_date = $form->date;
-        $trace->type = DailyTrace::TYPE_FAIL;
+        $trace->type = DailyTrace::TYPE_OTHER;
         $trace->account_id = self::getUserId();
         $trace->note = $form->note;
         if (!$trace->save()) {

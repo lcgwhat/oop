@@ -25,6 +25,7 @@ class TraceService extends Service
         if (!$trace->save()) {
             return $this->addErrors($trace->getErrors());
         }
+
         return true;
     }
 
@@ -36,20 +37,38 @@ class TraceService extends Service
         $query->andWhere(['type' => DailyTrace::TYPE_FAIL]);
         $query->andWhere(['DATE_FORMAT(trace_date, "%Y-%m")' => $month]);
         $query->orderBy(['trace_date'=>SORT_ASC]);
-        $query->asArray();
-        return $query->all();
+
+        $traces= $query->all();
+        $events = [];
+        $fails = [];
+        foreach ($traces as $trace) {
+            /**
+             * @var $trace DailyTrace
+             */
+            if ($trace->isFail()) {
+                $fails[$trace->trace_date] = $trace->getAttributes()+['typeName'=>$trace->isFail()?'失败':'其他'];
+            }
+            $events[$trace->trace_date][] = $trace->getAttributes()+['typeName'=>$trace->isFail()?'失败':'其他'];
+        }
+
+        return [
+            'events' => $events,
+            'fails' => $fails
+        ];
     }
 
-    public function getDayEvent( $day)
+    public function otherLog(FailLogForm $form)
     {
-        $unixTime = strtotime($day);
-        $day = date('Y-m-d', $unixTime);
-        $query = DailyTrace::find();
-        $query->andWhere(['account_id' => self::getUserId()]);
-        $query->andWhere(['DATE_FORMAT(trace_date, "%Y-%m-%d")' => $day]);
-        $query->orderBy(['trace_date'=>SORT_ASC]);
-        $query->asArray();
-        return $query->all();
+        $trace = new DailyTrace();
+        $trace->trace_date = $form->date;
+        $trace->type = DailyTrace::TYPE_FAIL;
+        $trace->account_id = self::getUserId();
+        $trace->note = $form->note;
+        if (!$trace->save()) {
+            return $this->addErrors($trace->getErrors());
+        }
+
+        return true;
     }
 
 

@@ -17,6 +17,9 @@ class DailyTrace extends \yii\db\ActiveRecord
 {
     const TYPE_FAIL = 10;
     const TYPE_OTHER = 20;
+    public function isFail(){
+        return $this->type == self::TYPE_FAIL;
+    }
     /**
      * {@inheritdoc}
      */

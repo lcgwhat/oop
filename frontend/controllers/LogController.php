@@ -29,7 +29,20 @@ class LogController extends Controller
         }
         return $this->jsonSuccess('操作成功');
     }
-
+    public function actionOtherLog()
+    {
+        $form = new FailLogForm();
+        $form->loadPost('');
+        if (!$form->validate()) {
+            return $this->jsonError($form->getError());
+        }
+        $service = new TraceService();
+        $res = $service->otherLog($form);
+        if (!$res) {
+            return $this->jsonError($service->getError());
+        }
+        return $this->jsonSuccess('操作成功');
+    }
     public function actionMonthLog()
     {
         $month = \Yii::$app->request->get('month');
@@ -49,17 +62,5 @@ class LogController extends Controller
         return $this->jsonSuccess('',$res);
     }
 
-    public function actionGetDayEvent(){
-        $day = \Yii::$app->request->get('day');
-        $validator = new DateValidator();
-        $validator->format = 'Y-m-d';
-        if (!$validator->validate($day)) {
-            return $this->jsonError('格式错误');
 
-        }
-        $service = new TraceService();
-        $res = $service->getDayEvent($day);
-
-        return $this->jsonSuccess('',$res);
-    }
 }

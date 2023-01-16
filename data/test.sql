@@ -1,14 +1,20 @@
+DROP TABLE IF EXISTS `account_user`;
 CREATE TABLE `account_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '账号id',
   `email` varchar(30) NOT NULL DEFAULT '' COMMENT '邮箱',
   `username` varchar(30) NOT NULL DEFAULT '' COMMENT '用户名',
-  `password` varchar(72) NOT NULL DEFAULT '' COMMENT '密码',
-  `create_at` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `password` varchar(108) NOT NULL DEFAULT '' COMMENT '密码',
+  `create_at` int(11) NOT NULL DEFAULT 0 COMMENT '创建时间',
   `create_ip_at` varchar(12) NOT NULL DEFAULT '' COMMENT '创建ip',
   PRIMARY KEY (`id`),
   KEY `idx_email` (`email`),
   KEY `idx_username` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='账户';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='账户';
+
+-- ----------------------------
+-- Records of account_user
+-- ----------------------------
+INSERT INTO `account_user` VALUES ('1', '348437207@qq.com', 'liuchg', '$2y$13$oDFzdJOZ8LTo0oVOMzmw4.HzGM9z/QjFc7C5wO.fzckFb3hHDoCr6', '0', '127.0.0.1');
 
 
 

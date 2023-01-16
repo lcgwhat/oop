@@ -23,6 +23,12 @@ class FailLogForm extends FormModel
                 if(!$day) {
                     return $this->addError('date', '格式错误');
                 }
+                $origin = date_create($value);
+                $today= date_create(date('Y-m-d'));
+                $interval = date_diff($today, $origin );
+                if ($interval->format('%r%a') >0 ) {
+                    return $this->addError('date', '不能超过今天');
+                }
                 return date('Y-m-d', $day);
             }]
         ];

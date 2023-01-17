@@ -47,7 +47,6 @@ class DailyTrace extends \yii\db\ActiveRecord
             [['account_id', 'type'], 'integer'],
             [['trace_date'], 'safe'],
             [['note'], 'string', 'max' => 255],
-            [['account_id', 'trace_date'], 'unique', 'targetAttribute' => ['account_id', 'trace_date']],
         ];
     }
 

@@ -34,7 +34,6 @@ class TraceService extends Service
         $month = date('Y-m', $unixTime);
         $query = DailyTrace::find();
         $query->andWhere(['account_id' => self::getUserId()]);
-        $query->andWhere(['type' => DailyTrace::TYPE_FAIL]);
         $query->andWhere(['DATE_FORMAT(trace_date, "%Y-%m")' => $month]);
         $query->orderBy(['trace_date'=>SORT_ASC]);
 

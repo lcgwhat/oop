@@ -28,7 +28,21 @@ class TraceService extends Service
 
         return true;
     }
-
+    public function getStockLogs($month){
+        $unixTime = strtotime($month);
+        $month = date('Y-m', $unixTime);
+        $query = DailyTrace::find();
+        $query->andWhere(['account_id' => self::getUserId()]);
+        $query->andWhere(['type' => DailyTrace::TYPE_STOCk]);
+        $query->andWhere(['DATE_FORMAT(trace_date, "%Y-%m")' => $month]);
+        $query->orderBy(['trace_date'=>SORT_ASC]);
+        $traces= $query->all();
+        $events = [];
+        foreach ($traces as $trace) {
+            $events[] = $trace->getAttributes()+['typeName'=>$trace->typeName];
+        }
+        return $events;
+    }
     public function getMonthDaily($month){
         $unixTime = strtotime($month);
         $month = date('Y-m', $unixTime);
@@ -45,9 +59,9 @@ class TraceService extends Service
              * @var $trace DailyTrace
              */
             if ($trace->isFail()) {
-                $fails[$trace->trace_date] = $trace->getAttributes()+['typeName'=>$trace->isFail()?'失败':'其他'];
+                $fails[$trace->trace_date] = $trace->getAttributes()+['typeName'=>$trace->typeName];
             }
-            $events[$trace->trace_date][] = $trace->getAttributes()+['typeName'=>$trace->isFail()?'失败':'其他'];
+            $events[$trace->trace_date][] = $trace->getAttributes()+['typeName'=>$trace->typeName];
         }
 
         return [
@@ -69,6 +83,17 @@ class TraceService extends Service
 
         return true;
     }
+    public function stockLog(FailLogForm $form){
+        $trace = new DailyTrace();
+        $trace->trace_date = $form->date;
+        $trace->type = DailyTrace::TYPE_STOCk;
+        $trace->account_id = self::getUserId();
+        $trace->note = $form->note;
+        if (!$trace->save()) {
+            return $this->addErrors($trace->getErrors());
+        }
 
+        return true;
+    }
 
 }

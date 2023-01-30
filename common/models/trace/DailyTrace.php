@@ -17,6 +17,18 @@ class DailyTrace extends \yii\db\ActiveRecord
 {
     const TYPE_FAIL = 10;
     const TYPE_OTHER = 20;
+    const TYPE_STOCk = 30;
+    public static function getTypeNames(){
+        return [
+            self::TYPE_FAIL => '失败',
+            self::TYPE_OTHER => '其他',
+            self::TYPE_STOCk => 'stock'
+        ];
+    }
+    public function getTypeName(){
+        $names = self::getTypeNames();
+        return $names[$this->type] ?? '未知类型';
+    }
     public function isFail(){
         return $this->type == self::TYPE_FAIL;
     }

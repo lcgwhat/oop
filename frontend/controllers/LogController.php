@@ -43,6 +43,20 @@ class LogController extends Controller
         }
         return $this->jsonSuccess('操作成功');
     }
+    public function actionStockLog()
+    {
+        $form = new FailLogForm();
+        $form->loadPost('');
+        if (!$form->validate()) {
+            return $this->jsonError($form->getError());
+        }
+        $service = new TraceService();
+        $res = $service->stockLog($form);
+        if (!$res) {
+            return $this->jsonError($service->getError());
+        }
+        return $this->jsonSuccess('操作成功');
+    }
     public function actionMonthLog()
     {
         $month = \Yii::$app->request->get('month');
@@ -62,5 +76,21 @@ class LogController extends Controller
         return $this->jsonSuccess('',$res);
     }
 
+    public function actionGetStockLogs(){
+        $month = \Yii::$app->request->get('month');
+        $month = strtotime($month);
+        if(!$month) {
+            return $this->jsonError('时间格式错误');
+        }
+        $month =date('Y-m', $month);
+        $monthValidator = new MonthValidate();
+        $err = '';
+        if (!$monthValidator->validate($month, $err)) {
+            return $this->jsonError($err);
+        }
+        $service = new TraceService();
+        $res = $service->getStockLogs($month);
 
+        return $this->jsonSuccess('',$res);
+    }
 }

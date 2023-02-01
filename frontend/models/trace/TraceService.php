@@ -9,7 +9,9 @@ namespace app\models\trace;
 
 use app\models\Service;
 
+use common\db\QueryHelper;
 use common\models\trace\DailyTrace;
+use common\utils\DatetimeUtility;
 
 class TraceService extends Service
 {
@@ -30,11 +32,14 @@ class TraceService extends Service
     }
     public function getStockLogs($month){
         $unixTime = strtotime($month);
-        $month = date('Y-m', $unixTime);
+        $month = date('Y-m-d', $unixTime);
+        $rangeDate = DatetimeUtility::last30Days($month);
+        $dateRange = implode('/',[$rangeDate['start'], $rangeDate['end']]);
         $query = DailyTrace::find();
         $query->andWhere(['account_id' => self::getUserId()]);
         $query->andWhere(['type' => DailyTrace::TYPE_STOCk]);
-        $query->andWhere(['DATE_FORMAT(trace_date, "%Y-%m")' => $month]);
+
+        $query->andWhere(QueryHelper::dateRange('trace_date', $dateRange));
         $query->orderBy(['trace_date'=>SORT_ASC]);
         $traces= $query->all();
         $events = [];

@@ -82,8 +82,9 @@ class LogController extends Controller
         if(!$month) {
             return $this->jsonError('时间格式错误');
         }
-        $month =date('Y-m', $month);
+        $month =date('Y-m-d', $month);
         $monthValidator = new MonthValidate();
+        $monthValidator->format = ['Y-m-d', 'Y/m/d'];
         $err = '';
         if (!$monthValidator->validate($month, $err)) {
             return $this->jsonError($err);

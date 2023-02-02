@@ -9,6 +9,7 @@ namespace app\controllers;
 
 use app\models\trace\FailLogForm;
 use app\models\trace\TraceService;
+use common\models\trace\DailyTrace;
 use common\validates\MonthValidate;
 use Exception;
 use yii\validators\DateValidator;
@@ -76,7 +77,15 @@ class LogController extends Controller
         return $this->jsonSuccess('',$res);
     }
 
-    public function actionGetStockLogs(){
+    public function actionGetSpecificTypeLogs(){
+        $type = \Yii::$app->request->get('type', 'stock');
+        $typesMap = [
+            'stock' => DailyTrace::TYPE_STOCk,
+            'fail' => DailyTrace::TYPE_FAIL,
+            'other' => DailyTrace::TYPE_OTHER];
+        if (!in_array($type, array_keys($typesMap))) {
+            return $this->jsonError('类型错误');
+        }
         $month = \Yii::$app->request->get('month');
         $month = strtotime($month);
         if(!$month) {
@@ -90,7 +99,7 @@ class LogController extends Controller
             return $this->jsonError($err);
         }
         $service = new TraceService();
-        $res = $service->getStockLogs($month);
+        $res = $service->getSpecificTypeLogs($month, $typesMap[$type]);
 
         return $this->jsonSuccess('',$res);
     }

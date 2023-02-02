@@ -30,14 +30,18 @@ class TraceService extends Service
 
         return true;
     }
-    public function getStockLogs($month){
+    public function getSpecificTypeLogs($month, $type){
+        return $this->getStockLogs($month, $type);
+    }
+
+    public function getStockLogs($month, $type){
         $unixTime = strtotime($month);
         $month = date('Y-m-d', $unixTime);
         $rangeDate = DatetimeUtility::last30Days($month);
         $dateRange = implode('/',[$rangeDate['start'], $rangeDate['end']]);
         $query = DailyTrace::find();
         $query->andWhere(['account_id' => self::getUserId()]);
-        $query->andWhere(['type' => DailyTrace::TYPE_STOCk]);
+        $query->andWhere(['type' => $type]);
 
         $query->andWhere(QueryHelper::dateRange('trace_date', $dateRange));
         $query->orderBy(['trace_date'=>SORT_ASC]);

@@ -44,7 +44,7 @@ class TraceService extends Service
         $query->andWhere(['type' => $type]);
 
         $query->andWhere(QueryHelper::dateRange('trace_date', $dateRange));
-        $query->orderBy(['trace_date'=>$sort]);
+        $query->orderBy(['trace_date'=>$sort, 'id'=>SORT_DESC]);
         $traces= $query->all();
         $events = [];
         foreach ($traces as $trace) {

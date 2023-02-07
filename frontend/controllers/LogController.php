@@ -86,6 +86,12 @@ class LogController extends Controller
         if (!in_array($type, array_keys($typesMap))) {
             return $this->jsonError('类型错误');
         }
+        $sort = \Yii::$app->request->get('sort', 'desc');
+        if ($sort == 'desc') {
+            $sort = SORT_DESC;
+        }else{
+            $sort = SORT_ASC;
+        }
         $month = \Yii::$app->request->get('month');
         $month = strtotime($month);
         if(!$month) {
@@ -99,7 +105,7 @@ class LogController extends Controller
             return $this->jsonError($err);
         }
         $service = new TraceService();
-        $res = $service->getSpecificTypeLogs($month, $typesMap[$type]);
+        $res = $service->getSpecificTypeLogs($month, $typesMap[$type],$sort);
 
         return $this->jsonSuccess('',$res);
     }

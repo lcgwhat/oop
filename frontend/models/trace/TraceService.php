@@ -30,11 +30,11 @@ class TraceService extends Service
 
         return true;
     }
-    public function getSpecificTypeLogs($month, $type){
-        return $this->getStockLogs($month, $type);
+    public function getSpecificTypeLogs($month, $type, $sort=SORT_DESC){
+        return $this->getStockLogs($month, $type, $sort);
     }
 
-    public function getStockLogs($month, $type){
+    public function getStockLogs($month, $type, $sort=SORT_ASC){
         $unixTime = strtotime($month);
         $month = date('Y-m-d', $unixTime);
         $rangeDate = DatetimeUtility::last30Days($month);
@@ -44,7 +44,7 @@ class TraceService extends Service
         $query->andWhere(['type' => $type]);
 
         $query->andWhere(QueryHelper::dateRange('trace_date', $dateRange));
-        $query->orderBy(['trace_date'=>SORT_ASC]);
+        $query->orderBy(['trace_date'=>$sort]);
         $traces= $query->all();
         $events = [];
         foreach ($traces as $trace) {

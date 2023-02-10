@@ -26,6 +26,23 @@ class Authorization extends ActionFilter
             return true;
         }
 
+        $userId = $this->getUserId();
+        if (!is_numeric($userId)) {
+            throw new ForbiddenHttpException("token 错误");
+        }
+
+        $user = UserIdentity::findIdentity($userId);
+        if (is_null($user)) {
+            throw new ForbiddenHttpException("用户不存在");
+        }
+        \Yii::$app->user->login($user);
+
+        return true;
+    }
+    private function getUserId(){
+        if (YII_ENV == 'dev') {
+            return $userId = 1;
+        }
         // jwt 检查
         $headers = \Yii::$app->request->getHeaders();
         $jwtToken = $headers->get('authorization');
@@ -41,16 +58,7 @@ class Authorization extends ActionFilter
             throw new ForbiddenHttpException($res->getError());
         }
         $userId = $jwt->decode($jwtToken);
-        if (!is_numeric($userId)) {
-            throw new ForbiddenHttpException("token 错误");
-        }
 
-        $user = UserIdentity::findIdentity($userId);
-        if (is_null($user)) {
-            throw new ForbiddenHttpException("用户不存在");
-        }
-        \Yii::$app->user->login($user);
-
-        return true;
+        return $userId;
     }
 }

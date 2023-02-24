@@ -14,6 +14,7 @@ use Lcobucci\JWT\Signer\Hmac\Sha256;
 use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\ValidationData;
 use Yii;
+use yii\web\UploadedFile;
 
 /**
  * Site controller
@@ -44,6 +45,18 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        $model = new UploadForm();
+
+        if (Yii::$app->request->isPost) {
+            $model->file = UploadedFile::getInstanceByName('file');
+            if ($model->upload()) {
+                // 文件上传成功
+                return '上传chengg';
+            }
+        }
+
+        return '失败';
+
         /**
          * @var $jwt JWT
          */

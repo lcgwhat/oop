@@ -45,18 +45,6 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $model = new UploadForm();
-
-        if (Yii::$app->request->isPost) {
-            $model->file = UploadedFile::getInstanceByName('file');
-            if ($model->upload()) {
-                // 文件上传成功
-                return '上传chengg';
-            }
-        }
-
-        return '失败';
-
         /**
          * @var $jwt JWT
          */

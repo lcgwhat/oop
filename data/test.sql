@@ -28,3 +28,17 @@ CREATE TABLE `daily_trace` (
   UNIQUE KEY `account_date` (`account_id`,`trace_date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='每日追踪';
 
+CREATE TABLE `stock_logic` (
+                               `id` int(11) NOT NULL AUTO_INCREMENT,
+                               `code` char(6) NOT NULL COMMENT '代码',
+                               `name` varchar(16) DEFAULT NULL,
+                               `logic` varchar(1024) DEFAULT NULL COMMENT '操作逻辑',
+                               `sort` smallint(6) DEFAULT 1 COMMENT '排序',
+                               PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb3;
+
+ALTER TABLE `stock_logic`
+    ADD COLUMN `sort`  smallint NULL DEFAULT 1 COMMENT '排序' AFTER `logic`;
+
+
+

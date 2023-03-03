@@ -6,6 +6,6 @@ use common\models\stock\StockLogic;
 
 class StockLogicService extends Service {
     public function search(){
-       return StockLogic::find()->orderBy(['id'=> SORT_DESC])->asArray()->all();
+       return StockLogic::find()->orderBy(['sort' => SORT_DESC,'id'=> SORT_DESC])->asArray()->all();
     }
 }

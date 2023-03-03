@@ -11,6 +11,7 @@ use Yii;
  * @property string|null $code 代码
  * @property string|null $name
  * @property string|null $logic 操作逻辑
+ * @property int $sort 排序
  */
 class StockLogic extends \yii\db\ActiveRecord
 {
@@ -30,6 +31,7 @@ class StockLogic extends \yii\db\ActiveRecord
         return [
             [['code'], 'required'],
             [['code'], 'string'],
+            [['sort'], 'integer'],
             [['code'], 'string', 'max' => 6],
             [['name'], 'string', 'max' => 16],
             [['logic'], 'string', 'max' => 1024],
@@ -46,6 +48,7 @@ class StockLogic extends \yii\db\ActiveRecord
             'code' => '代码',
             'name' => 'Name',
             'logic' => '操作逻辑',
+            'sort' => '排序',
         ];
     }
 }

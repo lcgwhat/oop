@@ -52,7 +52,7 @@ class Controller extends \yii\web\Controller
                 'class' => Cors::className(),
                 'cors' => [
                     'Origin' => [
-                        'http://127.0.0.1:8081','http://localhost:8081','http://106.52.54.220/'
+                        'http://127.0.0.1:8080','http://localhost:8080','http://106.52.54.220/'
                     ],
                     'Access-Control-Request-Method' => ['GET', 'POST', 'OPTIONS'],
                     'Access-Control-Request-Headers' => ['Content-Type', 'X-Requested-With', 'authorization'],

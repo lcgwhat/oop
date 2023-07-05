@@ -39,6 +39,16 @@ CREATE TABLE `stock_logic` (
 
 ALTER TABLE `stock_logic`
     ADD COLUMN `sort`  smallint NULL DEFAULT 1 COMMENT '排序' AFTER `logic`;
+# 计划
+CREATE TABLE `plan` (
+                        `id` int(11) NOT NULL AUTO_INCREMENT,
+                        `user_id` int(11) NOT NULL,
+                        `title` varchar(32) NOT NULL,
+                        `start_date` datetime DEFAULT NULL,
+                        `keep_day` int(11) NOT NULL COMMENT '坚持？天',
+                        `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+                        PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='计划';
 
 
 

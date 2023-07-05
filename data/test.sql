@@ -37,7 +37,17 @@ CREATE TABLE `stock_logic` (
                                PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb3;
 
+// 2023-03-05 多项逻辑分列显示
+CREATE TABLE `stock_logic_item` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `stock_logic_id` bigint(20) NOT NULL COMMENT 'stock_logic 主键',
+  `description` varchar(1024) DEFAULT NULL,
+  `sort` smallint(6) DEFAULT '0' COMMENT '排序',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='stock 逻辑子项目';
+
 ALTER TABLE `stock_logic`
+<<<<<<< HEAD
     ADD COLUMN `sort`  smallint NULL DEFAULT 1 COMMENT '排序' AFTER `logic`;
 # 计划
 CREATE TABLE `plan` (
@@ -49,6 +59,10 @@ CREATE TABLE `plan` (
                         `create_time` datetime DEFAULT NULL COMMENT '创建时间',
                         PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='计划';
+=======
+DROP COLUMN `logic`;
+
+>>>>>>> 9b14b0ab0bf86d5536c2680c7e57f5f56e46b057
 
 
 

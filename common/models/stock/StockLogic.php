@@ -10,7 +10,6 @@ use Yii;
  * @property int $id
  * @property string|null $code 代码
  * @property string|null $name
- * @property string|null $logic 操作逻辑
  * @property int $sort 排序
  */
 class StockLogic extends \yii\db\ActiveRecord
@@ -47,8 +46,11 @@ class StockLogic extends \yii\db\ActiveRecord
             'id' => 'ID',
             'code' => '代码',
             'name' => 'Name',
-            'logic' => '操作逻辑',
             'sort' => '排序',
         ];
+    }
+
+    public function getItems(){
+        return $this->hasMany(StockLogicItem::class, ['stock_logic_id' => 'id']);
     }
 }
